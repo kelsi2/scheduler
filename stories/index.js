@@ -1,20 +1,14 @@
 import React from "react";
-
 import { storiesOf } from "@storybook/react";
 import { action } from "@storybook/addon-actions";
-
 import "index.scss";
-
 import Button from "components/Button";
-
 import DayListItem from "components/DayListItem";
-
 import DayList from "components/DayList";
-
 import InterviewerListItem from "components/InterviewerListItem";
-
 import InterviewerList from "components/InterviewerList";
 
+// Button stories
 storiesOf("Button", module)
   .addParameters({
     backgrounds: [{ name: "dark", value: "#222f3e", default: true }],
@@ -31,6 +25,7 @@ storiesOf("Button", module)
     </Button>
   ));
 
+// DayListItem stories
 storiesOf("DayListItem", module)
   .addParameters({
     backgrounds: [{ name: "dark", value: "#222f3e", default: true }],
@@ -42,6 +37,7 @@ storiesOf("DayListItem", module)
     <DayListItem name="Tuesday" setDay={action("setDay")} spots={5} />
   ));
 
+// DayList stories
 const days = [
   {
     id: 1,
@@ -71,6 +67,7 @@ storiesOf("DayList", module)
     <DayList days={days} day={"Tuesday"} setDay={action("setDay")} />
   ));
 
+// InterviewerListItem stories
 const interviewer = {
   id: 1,
   name: "Sylvia Palmer",
@@ -105,6 +102,7 @@ storiesOf("InterviewerListItem", module)
     />
   ));
 
+// InterviewerList stories
 const interviewers = [
   { id: 1, name: "Sylvia Palmer", avatar: "https://i.imgur.com/LpaY82x.png" },
   { id: 2, name: "Tori Malcolm", avatar: "https://i.imgur.com/Nmx0Qxo.png" },
