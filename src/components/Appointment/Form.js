@@ -4,7 +4,7 @@ import Button from "../Button";
 
 export default function Form(props) {
   const [name, setName] = useState(props.name || "");
-  const [interviewer, setInterviewer] = useState(props.interviewer || null);
+  const [interviewer, setInterviewer] = useState([props.interviewer] || null);
 
   //reset interview form
   const reset = (event) => {
@@ -28,9 +28,6 @@ export default function Form(props) {
             name="name"
             type="text"
             placeholder="Enter Student Name"
-            /*
-          This must be a controlled component
-        */
           />
         </form>
         <InterviewerList
