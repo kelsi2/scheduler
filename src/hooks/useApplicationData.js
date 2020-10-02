@@ -62,10 +62,28 @@ export default function useApplicationData() {
       });
     });
   }
+  function updateSpots(spotChange) {
+    const days = { ...state.days };
+    let selectedDay = 0;
+    for (const day in days) {
+      if (days[day].name === state.day) {
+        selectedDay = days[day].id - 1;
+      }
+    }
+    const remainingSpots = days[selectedDay].spots + spotChange;
+    days[selectedDay].spots = remainingSpots;
+    return axios.put("/api/days", { days }).then(() =>
+      setState({
+        ...state,
+        days,
+      })
+    );
+  }
   return {
     state,
     setDay,
     bookInterview,
     cancelInterview,
+    updateSpots,
   };
 }

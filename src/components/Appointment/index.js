@@ -32,7 +32,7 @@ export default function Appointment(props) {
     transition(SAVING, true);
     props
       .bookInterview(props.id, interview)
-      .then(() => transition(SHOW))
+      .then(() => transition(SHOW), props.updateSpots(-1))
       .catch((error) => transition(ERROR_SAVE, true));
   }
 
@@ -44,7 +44,7 @@ export default function Appointment(props) {
     transition(DELETING, true);
     props
       .cancelInterview(props.id, interview)
-      .then(() => transition(EMPTY))
+      .then(() => transition(EMPTY), props.updateSpots(1))
       .catch((error) => transition(ERROR_DELETE, true));
   }
 
