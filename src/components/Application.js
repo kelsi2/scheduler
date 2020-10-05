@@ -8,7 +8,7 @@ import {
   getInterviewersForDay,
   getInterview,
 } from "helpers/selectors";
-import useVisualMode from "hooks/useVisualMode";
+// import useVisualMode from "hooks/useVisualMode";
 import useApplicationData from "hooks/useApplicationData";
 
 export default function Application(props) {

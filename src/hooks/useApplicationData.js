@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect } from "react";
+import { useReducer, useEffect } from "react";
 import axios from "axios";
 
 export default function useApplicationData() {
@@ -84,7 +84,7 @@ export default function useApplicationData() {
     };
     return axios.put(`/api/appointments/${id}`, appointment).then(() => {
       dispatch({ type: SET_INTERVIEW, value: appointments });
-      dispatch({ type: SET_INTERVIEW, value: -1 });
+      dispatch({ type: SET_SPOTS, value: -1 });
     });
   }
 
@@ -95,8 +95,10 @@ export default function useApplicationData() {
     };
     interview = null;
 
+    //Run dispatch twice on delete to ensure only one spot is removed
     return axios.delete(`/api/appointments/${id}`, appointment).then(() => {
       dispatch({ type: SET_SPOTS, value: +1 });
+      dispatch({ type: SET_SPOTS, value: -1 });
     });
   }
 
