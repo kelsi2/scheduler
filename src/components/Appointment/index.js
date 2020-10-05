@@ -32,7 +32,7 @@ export default function Appointment(props) {
     transition(SAVING, true);
     props
       .bookInterview(props.id, interview)
-      .then(() => transition(SHOW), props.updateSpots(-1))
+      .then(() => transition(SHOW))
       .catch((error) => transition(ERROR_SAVE, true));
   }
 
@@ -44,7 +44,7 @@ export default function Appointment(props) {
     transition(DELETING, true);
     props
       .cancelInterview(props.id, interview)
-      .then(() => transition(EMPTY), props.updateSpots(1))
+      .then(() => transition(EMPTY))
       .catch((error) => transition(ERROR_DELETE, true));
   }
 
@@ -84,13 +84,13 @@ export default function Appointment(props) {
       {mode === ERROR_SAVE && (
         <Error
           message={"Could not create appointment."}
-          onClose={() => transition(EMPTY)}
+          onClose={() => back()}
         />
       )}
       {mode === ERROR_DELETE && (
         <Error
           message={"Could not cancel appointment."}
-          onClose={() => transition(SHOW)}
+          onClose={() => back()}
         />
       )}
     </article>
