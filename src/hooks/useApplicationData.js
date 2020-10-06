@@ -1,50 +1,11 @@
 import { useReducer, useEffect } from "react";
 import axios from "axios";
+import reducer from "reducer/application";
 
 export default function useApplicationData() {
   const SET_DAY = "SET_DAY";
   const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
   const SET_INTERVIEW = "SET_INTERVIEW";
-  const SET_SPOTS = "SET_SPOTS";
-
-  function reducer(state, action) {
-    switch (action.type) {
-      case SET_DAY:
-        return {
-          ...state,
-          day: action.value,
-        };
-      case SET_APPLICATION_DATA:
-        return {
-          ...state,
-          ...action.value,
-        };
-      case SET_INTERVIEW:
-        return {
-          ...state,
-          appointments: action.value,
-        };
-      case SET_SPOTS:
-        let days = state.days;
-        let newSpots = days.map((day) => {
-          if (state.day === day.name) {
-            let remainingSpots = day.spots + action.value;
-            day.spots = remainingSpots;
-            return day;
-          } else {
-            return day;
-          }
-        });
-        return {
-          ...state,
-          days: newSpots,
-        };
-      default:
-        throw new Error(
-          `Tried to reduce with unsupported action type: ${action.type}`
-        );
-    }
-  }
 
   const [state, dispatch] = useReducer(reducer, {
     day: "Monday",
@@ -73,7 +34,7 @@ export default function useApplicationData() {
 
   const setDay = (day) => dispatch({ type: SET_DAY, value: day });
 
-  function bookInterview(id, interview) {
+  function bookInterview(id, interview, adding) {
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview },
@@ -82,9 +43,10 @@ export default function useApplicationData() {
       ...state.appointments,
       [id]: appointment,
     };
+    // depending if a user is adding or editing an appointment, this will determine is a spot is added or not
+    const type = adding ? "newAppt" : "editAppt";
     return axios.put(`/api/appointments/${id}`, appointment).then(() => {
-      dispatch({ type: SET_INTERVIEW, value: appointments });
-      dispatch({ type: SET_SPOTS, value: -1 });
+      dispatch({ type: SET_INTERVIEW, value: { appointments, type } });
     });
   }
 
@@ -92,16 +54,21 @@ export default function useApplicationData() {
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview },
+      interview: null,
     };
-    interview = null;
 
-    //Run dispatch twice on delete to ensure only one spot is removed
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment,
+    };
+
     return axios.delete(`/api/appointments/${id}`, appointment).then(() => {
-      dispatch({ type: SET_SPOTS, value: +1 });
-      dispatch({ type: SET_SPOTS, value: -1 });
+      dispatch({
+        type: SET_INTERVIEW,
+        value: { appointments: appointments, type: "cancelAppt" },
+      });
     });
   }
-
   return {
     state,
     setDay,

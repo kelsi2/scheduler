@@ -14,6 +14,7 @@ import {
 } from "@testing-library/react";
 
 import Application from "components/Application";
+import axios from "axios";
 
 afterEach(cleanup);
 
@@ -52,7 +53,7 @@ describe("Application", () => {
   });
 
   it("loads data, cancels an interview and increases the spots remaining for Monday by 1", async () => {
-    const { container, debug } = render(<Application />);
+    const { container } = render(<Application />);
 
     await waitForElement(() => getByText(container, "Archie Cohen"));
 
@@ -80,7 +81,42 @@ describe("Application", () => {
       queryByText(day, "Monday")
     );
     expect(getByText(day, "1 spot remaining")).toBeInTheDocument();
+  });
 
-    debug();
+  it("loads data, edits an interview and keeps the spots remaining for Monday the same", async () => {
+    // 1. Render the Application.
+    const { container } = render(<Application />);
+
+    // 2. Wait until the text "Archie Cohen" is displayed.
+    await waitForElement(() => getByText(container, "Archie Cohen"));
+
+    // 3. Click the "Edit" button on the booked appointment.
+    const appointment = getAllByTestId(
+      container,
+      "appointment"
+    ).find((appointment) => queryByText(appointment, "Archie Cohen"));
+
+    fireEvent.click(getByAltText(appointment, "Edit"));
+
+    // 4. Add appointment details
+    fireEvent.change(getByPlaceholderText(appointment, /enter student name/i), {
+      target: { value: "Lydia Miller-Jones" },
+    });
+    fireEvent.click(getByAltText(appointment, "Sylvia Palmer"));
+
+    // 5. Click the "Save" button.
+    fireEvent.click(getByText(appointment, "Save"));
+
+    // 6. Check that the element with the text "Saving" is displayed.
+    expect(getByText(appointment, "Saving")).toBeInTheDocument();
+
+    // 7. Wait for confirmed appointment to appear
+    await waitForElement(() => getByText(appointment, "Lydia Miller-Jones"));
+
+    // 8. Check that the DayListItem with the text "Monday" also has the text "2 spots remaining".
+    const day = getAllByTestId(container, "day").find((day) =>
+      queryByText(day, "Monday")
+    );
+    expect(getByText(day, "1 spot remaining")).toBeInTheDocument();
   });
 });
