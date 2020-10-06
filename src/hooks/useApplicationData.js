@@ -1,4 +1,4 @@
-import { useReducer, useEffect } from "react";
+import {useReducer, useEffect} from "react";
 import axios from "axios";
 import reducer from "reducer/application";
 
@@ -11,7 +11,7 @@ export default function useApplicationData() {
     day: "Monday",
     days: [],
     appointments: {},
-    interviewers: {},
+    interviewers: {}
   });
 
   useEffect(() => {
@@ -27,34 +27,34 @@ export default function useApplicationData() {
           days: responseArr[0].data,
           appointments: responseArr[1].data,
           interviewers: responseArr[2].data,
-        },
+        }
       });
     });
   }, []);
 
-  const setDay = (day) => dispatch({ type: SET_DAY, value: day });
+  const setDay = (day) => dispatch({type: SET_DAY, value: day});
 
   function bookInterview(id, interview, adding) {
     const appointment = {
       ...state.appointments[id],
-      interview: { ...interview },
+      interview: {...interview}
     };
     const appointments = {
       ...state.appointments,
-      [id]: appointment,
+      [id]: appointment
     };
     // depending if a user is adding or editing an appointment, this will determine is a spot is added or not
     const type = adding ? "newAppt" : "editAppt";
     return axios.put(`/api/appointments/${id}`, appointment).then(() => {
-      dispatch({ type: SET_INTERVIEW, value: { appointments, type } });
+      dispatch({type: SET_INTERVIEW, value: {appointments, type}});
     });
   }
 
   function cancelInterview(id, interview) {
     const appointment = {
       ...state.appointments[id],
-      interview: { ...interview },
-      interview: null,
+      interview: {...interview},
+      interview: null
     };
 
     const appointments = {
@@ -65,7 +65,7 @@ export default function useApplicationData() {
     return axios.delete(`/api/appointments/${id}`, appointment).then(() => {
       dispatch({
         type: SET_INTERVIEW,
-        value: { appointments: appointments, type: "cancelAppt" },
+        value: {appointments: appointments, type: "cancelAppt"},
       });
     });
   }
@@ -73,6 +73,6 @@ export default function useApplicationData() {
     state,
     setDay,
     bookInterview,
-    cancelInterview,
+    cancelInterview
   };
 }

@@ -40,6 +40,8 @@
     "@testing-library/jest-dom": "^4.0.0",
     "@testing-library/react": "^8.0.7",
     "@testing-library/react-hooks": "^3.4.2",
+    "eslint": "^7.10.0",
+    "eslint-config-lighthouselabs": "github:lighthouse-labs/eslint-config-lighthouselabs",
     "node-sass": "^4.14.1",
     "prop-types": "^15.7.2",
     "react-test-renderer": "^16.9.0"

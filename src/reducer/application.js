@@ -19,12 +19,12 @@ export default function reducer(state, action) {
       if (state.day === day.name) {
         const remSpots = day.spots + numSpotsChanged;
         day.spots = remSpots;
-        return { ...day };
+        return {...day};
       } else {
         return day;
       }
     });
-    return { ...state, days: spotsChanged };
+    return {...state, days: spotsChanged};
   };
 
   switch (action.type) {
