@@ -148,9 +148,9 @@ describe("Application", () => {
   });
 
   it("shows the delete error when failing to delete an existing appointment", async () => {
-    axios.put.mockRejectedValueOnce();
+    axios.delete.mockRejectedValueOnce();
 
-    const {container, debug} = render(<Application />);
+    const {container} = render(<Application />);
     await waitForElement(() => getByText(container, "Archie Cohen"));
 
     const appointment = getAllByTestId(
@@ -166,7 +166,7 @@ describe("Application", () => {
 
     expect(getByText(appointment, "Deleting")).toBeInTheDocument();
 
-    waitForElement(() => queryByText(appointment, "Error"));
+    await waitForElement(() => queryByText(appointment, "Error"));
 
     expect(queryByText(appointment, "Could not delete appointment"));
   });
