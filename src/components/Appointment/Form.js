@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import InterviewerList from "../InterviewerList";
 import Button from "../Button";
 
@@ -16,10 +16,6 @@ export default function Form(props) {
   const cancel = () => {
     reset();
     props.onCancel();
-  };
-  //save interview form
-  const save = () => {
-    props.onSave(name, interviewer);
   };
 
   //if form is blank, error

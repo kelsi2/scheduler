@@ -43,7 +43,7 @@ export default function useApplicationData() {
       ...state.appointments,
       [id]: appointment
     };
-    // depending if a user is adding or editing an appointment, this will determine is a spot is added or not
+    // depending if a user is adding or editing an appointment, this will determine is a spot is added to the count or not
     const type = adding ? "newAppt" : "editAppt";
     return axios.put(`/api/appointments/${id}`, appointment).then(() => {
       dispatch({type: SET_INTERVIEW, value: {appointments, type}});
@@ -54,7 +54,7 @@ export default function useApplicationData() {
     const appointment = {
       ...state.appointments[id],
       interview: {...interview},
-      interview: null
+      noInterview: null
     };
 
     const appointments = {

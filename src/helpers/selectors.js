@@ -4,15 +4,14 @@ export function getAppointmentsForDay(state, day) {
 
   if (filteredDays.length === 0) {
     return apptArr;
+  } else {
+    filteredDays[0].appointments.map((id) => {
+      if (state.appointments[id]) {
+        apptArr.push(state.appointments[id]);
+      }
+    });
+    return apptArr;
   }
-
-  filteredDays[0].appointments.map((id) => {
-    if (state.appointments[id]) {
-      apptArr.push(state.appointments[id]);
-    }
-  });
-
-  return apptArr;
 }
 
 export function getInterviewersForDay(state, day) {
