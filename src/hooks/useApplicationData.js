@@ -1,6 +1,6 @@
 import {useReducer, useEffect} from "react";
 import axios from "axios";
-import reducer from "reducer/application";
+import reducer from "reducers/application";
 
 export default function useApplicationData() {
   const SET_DAY = "SET_DAY";
