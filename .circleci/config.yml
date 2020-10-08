@@ -48,7 +48,3 @@ workflows:
               ignore: production
           requires:
             - build
-  version: 2
-  test:
-    jobs:
-      - build
