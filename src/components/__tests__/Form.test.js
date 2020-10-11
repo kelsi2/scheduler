@@ -1,6 +1,6 @@
 import React from "react";
 
-import { render, cleanup, fireEvent } from "@testing-library/react";
+import {render, cleanup, fireEvent} from "@testing-library/react";
 
 import Form from "components/Appointment/Form";
 
@@ -16,14 +16,14 @@ describe("Form", () => {
   ];
 
   it("renders without student name if not provided", () => {
-    const { getByPlaceholderText } = render(
+    const {getByPlaceholderText} = render(
       <Form interviewers={interviewers} />
     );
     expect(getByPlaceholderText("Enter Student Name")).toHaveValue("");
   });
 
   it("renders with initial student name", () => {
-    const { getByTestId } = render(
+    const {getByTestId} = render(
       <Form interviewers={interviewers} name="Lydia Miller-Jones" />
     );
     expect(getByTestId("student-name-input")).toHaveValue("Lydia Miller-Jones");
@@ -31,17 +31,18 @@ describe("Form", () => {
 
   it("validates that the student name is not blank", () => {
     const onSave = jest.fn();
-    const { getByText } = render(
+    const {getByText} = render(
       <Form interviewers={interviewers} onSave={onSave} />
     );
+    fireEvent.click(getByAltText("Sylvia Palmer"));
     fireEvent.click(getByText("Save"));
     expect(getByText(/student name cannot be blank/i)).toBeInTheDocument();
-    expect(onSave).not.toHaveBeenCalled();
+    expect(onSave).toHaveBeenCalledWith("Lydia Miller-Jones", 1);
   });
 
   it("can successfully save after trying to submit an empty student name", () => {
     const onSave = jest.fn();
-    const { getByText, getByPlaceholderText, queryByText } = render(
+    const {getByText, getByPlaceholderText, queryByText} = render(
       <Form interviewers={interviewers} onSave={onSave} />
     );
 
@@ -51,7 +52,7 @@ describe("Form", () => {
     expect(onSave).not.toHaveBeenCalled();
 
     fireEvent.change(getByPlaceholderText("Enter Student Name"), {
-      target: { value: "Lydia Miller-Jones" },
+      target: {value: "Lydia Miller-Jones"},
     });
 
     fireEvent.click(getByText("Save"));
@@ -64,7 +65,7 @@ describe("Form", () => {
 
   it("calls onCancel and resets the input field", () => {
     const onCancel = jest.fn();
-    const { getByText, getByPlaceholderText, queryByText } = render(
+    const {getByText, getByPlaceholderText, queryByText} = render(
       <Form
         interviewers={interviewers}
         name="Lydia Mill-Jones"
@@ -76,7 +77,7 @@ describe("Form", () => {
     fireEvent.click(getByText("Save"));
 
     fireEvent.change(getByPlaceholderText("Enter Student Name"), {
-      target: { value: "Lydia Miller-Jones" },
+      target: {value: "Lydia Miller-Jones"},
     });
 
     fireEvent.click(getByText("Cancel"));
